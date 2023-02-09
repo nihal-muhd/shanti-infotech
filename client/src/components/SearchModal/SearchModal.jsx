@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { } from 'react'
 import { Modal, useMantineTheme } from '@mantine/core'
 
 // eslint-disable-next-line react/prop-types
-const SearchModal = ({ searchModal, setSearchModal, searchData,searchWord }) => {
-
+const SearchModal = ({ searchModal, setSearchModal, findWord }) => {
+console.log(findWord,'modal')
   const theme = useMantineTheme()
 
   return (
@@ -16,14 +16,10 @@ const SearchModal = ({ searchModal, setSearchModal, searchData,searchWord }) => 
       opened={searchModal}
       onClose={() => setSearchModal(false)}
     >
-      <form className="" >
-        
-        <div>
-          <input type="text" className="" name='searchdata' placeholder=''  />
-        </div>
-
-
-      </form>
+{findWord ?<><h3>{findWord?.title}</h3>
+<p>{findWord?.status}</p></>
+:<h3>oops no task found</h3>}
+  
     </Modal>
   )
 }

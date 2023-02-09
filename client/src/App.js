@@ -1,44 +1,59 @@
 import StatusLine from "./components/StatusLine/StatusLine";
 import './App.css'
 import { BsSearch } from 'react-icons/bs'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchModal from "./components/SearchModal/SearchModal";
 import axios from "axios";
 
 
+
 function App() {
   const [searchModal, setSearchModal] = useState(false)
+  const [taskData,setTaskData]=useState([])
+  const [searchWord,setSearchWord]=useState('')
+  let findWord
 
-  const handleSearch = (data) => {
+  useEffect(()=>{
+    async function searchTask(){
+      const res = await axios.get("http://localhost:5000/get-task", {
+        withCredentials: true,
+      });
+      setTaskData(res.data)
+    }
+    searchTask()
+  },[])
 
+  const handleSearch=async()=>{
+    findWord=taskData.filter((v)=>v.title===searchWord)
+    setSearchModal(true)
   }
 
   return (
     <div className="App">
       <h1>Task Management</h1>
       <div className="search-bar">
-        <input type='text' placeholder="search" className="search-input" />
-        <span><BsSearch /></span>
+        <input type='text' placeholder="search" className="search-input" onChange={(e)=>setSearchWord(e.target.value)}/>
+        <span><BsSearch onClick={handleSearch}/></span>
       </div>
       <main>
         <section>
           <StatusLine
-            status='Step 1' handleSearch={handleSearch} />
+            status='Step 1'  />
 
           <StatusLine
-            status='Step 2' handleSearch={handleSearch} />
+            status='Step 2'  />
 
           <StatusLine
-            status='Step 3' handleSearch={handleSearch} />
+            status='Step 3'  />
 
           <StatusLine
-            status='Step 4' handleSearch={handleSearch} />
+            status='Step 4'  />
         </section>
       </main>
       <SearchModal searchModal={searchModal}
         setSearchModal={setSearchModal}
-        searchData
-        searchWord />
+        findWord={findWord}
+         />
     </div>
   );
 }

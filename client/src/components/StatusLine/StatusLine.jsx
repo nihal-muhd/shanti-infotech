@@ -34,7 +34,7 @@ const StatusLine = (props) => {
       status: status,
     };
     console.log(newTask);
-    const res = await axios.post(
+    await axios.post(
       "http://localhost:5000/add-task",
       { newTask, status },
       { withCredentials: true }
@@ -62,7 +62,6 @@ const StatusLine = (props) => {
   }
 
   if (tasks) {
-    console.log(tasks,'hey new')
     taskForStatus = tasks?.filter((task) => task.status === stepStatus);
   }
 
